@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #777;
+        }  
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #ffffff,  #0073bd);
+            background-size: cover;
+            background-repeat: no-repeat; 
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #ffffff;
+            color: #0073bd;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            flex-grow: 1;
+        }
+        nav ul li {
+            text-align: center;
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #0073bd;
+            font-size: 18px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+            color: #c75151;
+        }
+        #logo {
+            width: 60px;
+            height: auto;
+            flex-shrink: 0;
+        }
+        #date-time {
+            font-size: 16px;
+            color: #0073bd;
+            margin-right: -120px; 
+        }
+        h1 {
+            color: #000000;
+            padding-left: 25px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        h2 {
+            color: #0073bd;
+            padding-left: 5px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        .active {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <img src="to-do.jpg" alt="Logo" id="logo">
+        </div>
+        <div>
+            <ul>
+                <li><a href="todo.html" class="active"><strong>Home</strong></a></li>
+                <li><a href="#"><strong>Pending Tasks</strong></a></li>
+                <li><a href="#"><strong>LogIn</strong></a></li>
+                <li><a href="#"><strong>Help</strong></a></li>
+            </ul>
+        </div>
+        
+        <div id="date-time"></div>
+    </nav>
+    <h1>Organize your work <BR></BR>and life, finally.</h1>
+    <div class="container">
+        <h2>Add your To-Do tasks</h2>
+        <input type="text" id="taskInput" placeholder="Enter a task...">
+        <button id="addTaskBtn">Add Task</button>
+        <h2>Pending Tasks</h2>
+        <ul id="pendingTasks"></ul>
+        <h2>Completed Tasks</h2>
+        <ul id="completedTasks"></ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const pendingTasksList = document.getElementById('pendingTasks');
+        const completedTasksList = document.getElementById('completedTasks');
+        addTaskBtn.addEventListener('click', function() {
+            const taskText = taskInput.value.trim();
+            if (taskText !== '') {
+                addTask(taskText);
+                taskInput.value = '';
+            }
+        });
+        function addTask(taskText) {
+            const li = document.createElement('li');
+            const date = new Date();
+            const dateTime = date.toLocaleString();
+            li.dataset.dateTime = dateTime;
+            li.textContent = `${taskText} - ${dateTime}`;
+            const completeBtn = document.createElement('button');
+            completeBtn.textContent = 'Complete';
+            completeBtn.addEventListener('click', function() {
+                completeTask(li);
+            });
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.addEventListener('click', function() {
+                editTask(li);
+            });
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', function() {
+                deleteTask(li);
+            });
+            li.appendChild(completeBtn);
+            li.appendChild(editBtn);
+            li.appendChild(deleteBtn);
+            pendingTasksList.appendChild(li);
+        }
+        function completeTask(task) {
+            task.classList.add('completed');
+            completedTasksList.appendChild(task);
+            task.querySelector('button').remove();
+            task.querySelector('button').remove();
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', function() {
+                deleteTask(task);
+            });
+            task.appendChild(deleteBtn);
+            const buttons = task.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (button !== deleteBtn) {
+                    button.remove();
+                }
+            });
+        }
+        function editTask(task) {
+            const newText = prompt('Enter new task text:');
+            if (newText !== null && newText !== '') {
+                task.textContent = `${newText} - ${task.dataset.dateTime}`;
+                const completeBtn = document.createElement('button');
+                completeBtn.textContent = 'Complete';
+                completeBtn.addEventListener('click', function() {
+                    completeTask(task);
+                });
+                task.appendChild(completeBtn); 
+            }
+        }
+        function deleteTask(task) {
+            task.remove();
+        }
+    </script>
+</body>
+</html>

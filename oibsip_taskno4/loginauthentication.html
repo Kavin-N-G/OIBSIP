@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ec7672, #0ba29d);
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        h2 {
+            margin: 0 0 20px;
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 12px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            margin-top: 20px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Registration</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password">
+        <button onclick="register()">Register</button>
+        <hr>
+        <h2>User Login</h2>
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername">
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword">
+        <button onclick="login()">Login</button>
+        <div id="message"></div>
+    </div>
+    <script>
+        const users = {};
+        function register() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                if (users.hasOwnProperty(username)) {
+                    showMessage("Username already exists. Please choose a different one.");
+                } else {
+                    users[username] = password;
+                    showMessage("Registration successful!");
+                }
+            } else {
+                showMessage("Please enter both username and password.");
+            }
+        }
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            if (username && password) {
+                if (users.hasOwnProperty(username) && users[username] === password) {
+                    showMessage("Login successful! Welcome, " + username + "!");
+                } else {
+                    showMessage("Invalid username or password.");
+                }
+            } else {
+                showMessage("Please enter both username and password.");
+            }
+        }
+        function showMessage(message) {
+            document.getElementById('message').textContent = message;
+        }
+    </script>
+</body>
+</html>
